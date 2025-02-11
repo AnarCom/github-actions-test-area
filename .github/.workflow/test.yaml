@@ -1,0 +1,27 @@
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        version: [10, 12, 14]
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: write file
+        run: |
+         echo ${{matrix.version}} > data-${{matrix.version}}.txt
+      # Runs a set of commands using the runners shell
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: ${{matrix.version}}
+          path: data-${{matrix.version}}.txt
