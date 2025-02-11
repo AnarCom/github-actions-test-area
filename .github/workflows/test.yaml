@@ -30,13 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3.0.1
+        uses: actions/download-artifact@v4
       - name: Print files list
         run: find .
       - name: Create release
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
+          body: Changed description
+          draft: false
           prerelease: false
           files: |
             ${{github.workspace}}/*/*.zip
