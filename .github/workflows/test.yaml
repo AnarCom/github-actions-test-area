@@ -39,5 +39,6 @@ jobs:
           body: Changed description
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             ${{github.workspace}}/*/*.zip
