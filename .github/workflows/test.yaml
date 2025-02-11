@@ -3,10 +3,8 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+    tags:
+      - '*'
 jobs:
   build:
     strategy:
@@ -25,3 +23,20 @@ jobs:
         with: 
           name: ${{matrix.version}}
           path: data-${{matrix.version}}.txt
+
+  create_release:
+    needs: build
+    if: startsWith(github.event.ref, 'refs/tags/cdm-v-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3.0.1
+      - name: Print files list
+        run: find .
+      - name: Create release
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          prerelease: false
+          files: |
+            ${{github.workspace}}/*/*.zip
