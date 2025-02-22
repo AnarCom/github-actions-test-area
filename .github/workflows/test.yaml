@@ -34,7 +34,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: $GITHUB_WORKSPACE/artifacts_download
+          path: ./artifacts_download
       - name: Print files list
         run: find .
       - name: ls folder
