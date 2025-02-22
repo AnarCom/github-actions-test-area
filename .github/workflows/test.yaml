@@ -40,7 +40,7 @@ jobs:
       - name: ls folder
         run: ls -la ./artifacts_download
       - name: zip artifacts_data
-        run: for dir in */; do [ -d "$dir" ] && zip -r "${dir%/}.zip" "${dir%/}" && rm -r "${dir%/}"; done
+        run: cd ./artifacts_download && for dir in */; do [ -d "$dir" ] && zip -r "${dir%/}.zip" "${dir%/}" && rm -r "${dir%/}"; done
       - name: Print files list
         run: find .
       - name: ls folder
