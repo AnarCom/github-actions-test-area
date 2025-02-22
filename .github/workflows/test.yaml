@@ -3,8 +3,8 @@ name: CI
 
 on:
   push:
-    tags:
-      - '*'
+    # tags:
+    #   - '*'
 jobs:
   build:
     strategy:
@@ -26,19 +26,31 @@ jobs:
 
   create_release:
     needs: build
-    if: startsWith(github.event.ref, 'refs/tags/cdm-v-')
+    # if: startsWith(github.event.ref, 'refs/tags/cdm-v-')
     runs-on: ubuntu-latest
     steps:
+      - name: Create subfolder
+        run: mkdir artifacts_download
       - name: Download artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: $GITHUB_WORKSPACE/artifacts_download
       - name: Print files list
         run: find .
-      - name: Create release
-        uses: softprops/action-gh-release@v2
-        with:
-          body: Changed description
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            ${{github.workspace}}/*/*.zip
+      - name: ls folder
+        run: ls -la ./artifacts_download
+      - name: zip artifacts_data
+        run: for dir in */; do [ -d "$dir" ] && zip -r "${dir%/}.zip" "${dir%/}" && rm -r "${dir%/}"; done
+      - name: Print files list
+        run: find .
+      - name: ls folder
+        run: ls -la ./artifacts_download
+      # - name: Create release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     body: Changed description
+      #     draft: false
+      #     prerelease: false
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     files: |
+      #       ${{github.workspace}}/*/*.zip
