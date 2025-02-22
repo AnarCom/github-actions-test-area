@@ -45,12 +45,12 @@ jobs:
         run: find .
       - name: ls folder
         run: ls -la ./artifacts_download
-      # - name: Create release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     body: Changed description
-      #     draft: false
-      #     prerelease: false
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     files: |
-      #       ${{github.workspace}}/*/*.zip
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: Changed description
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            ${{github.workspace}}/artifacts_download/*.zip
